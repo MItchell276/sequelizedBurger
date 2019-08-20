@@ -3,7 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
 var db = require("./models");
-// var routes = require("./routes")
+var routes = require("./routes");
 
 var PORT = process.env.PORT || 8080;
 var app = express();
@@ -24,7 +24,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 var connection = require("./config/connection.js");
-require("./routes/api.routes")(app);
+require("./routes")(app);
 
 db.sequelize.sync().then(function () {
     app.listen(PORT, function () {

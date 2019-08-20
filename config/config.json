@@ -2,9 +2,9 @@
     "development": {
         "username": "root",
         "password": "root",
-        "database": "burger_bd",
+        "database": "burger_db",
         "host": "127.0.0.1",
-        "dialect": "mysql2"
+        "dialect": "mysql"
     },
     "production": {
         "use_env_variable": "JAWSDB_URL",
