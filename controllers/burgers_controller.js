@@ -1,44 +1,40 @@
-var express = require("express");
+const express = require('express');
+const router = express.Router();
+const db = require('../models');
 
-var router = express.Router();
-var db = require("../models/");
-
-// get route -> index
-router.get("/", function (req, res) {
-  res.redirect("/burger");
+router.get('/', (req, res) => {
+  res.redirect('/burgers');
 });
 
-router.get("/burger", function (req, res) {
-  // express callback response by calling burger.selectAllBurger
-  db.
-    burger.findAll({})
-    .then(function (result) {
-      res.render("index", { burger_data: result });
-    })
-  // wrapper for orm.js that using MySQL query callback will return burger_data, render to index with handlebar
-
-
-});
-
-// post route -> back to index
-router.post("/burger/create", function (req, res) {
-  // takes the request object using it as input for burger.addBurger
-  burger.create(req.body.burger_name, function (result) {
-    // wrapper for orm.js that using MySQL insert callback will return a log to console,
-    // render back to index with handle
-    console.log(result);
-    res.redirect("/");
+router.get('/burgers', (req, res) => {
+  db.Burger.findAll().then(dbBurger => {
+    console.log(dbBurger);
+    var hbsObject = { burger: dbBurger };
+    return res.render('index', hbsObject);
   });
 });
 
-// put route -> back to index
-router.put("/burger/:id", function (req, res) {
-  burger.update(req.params.id, function (result) {
-    // wrapper for orm.js that using MySQL update callback will return a log to console,
-    // render back to index with handle
-    console.log(result);
-    // Send back response and let page reload from .then in Ajax
-    res.sendStatus(200);
+router.post('/burgers/create', (req, res) => {
+  db.Burger.create({
+    burger_name: req.body.burger_name,
+  }).then(dbBurger => {
+    console.log(dbBurger);
+    res.redirect('/');
+  });
+});
+
+router.put('/burgers/update/:id', (req, res) => {
+  db.Burger.update(
+    {
+      devoured: true,
+    },
+    {
+      where: {
+        id: req.params.id,
+      },
+    }
+  ).then(dbBurger => {
+    res.json('/');
   });
 });
 
